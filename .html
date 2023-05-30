@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Parking System</title>
+  <style>
+    /* CSS code goes here */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Parking System</h1>
+    <div class="parking-lot">
+      <div class="parking-slot">1</div>
+      <div class="parking-slot">2</div>
+      <div class="parking-slot">3</div>
+      <div class="parking-slot booked">4</div>
+      <div class="parking-slot selected">5</div>
+      <div class="parking-slot">6</div>
+      <div class="parking-slot">7</div>
+      <div class="parking-slot">8</div>
+      <div class="parking-slot">9</div>
+      <div class="parking-slot booked">10</div>
+    </div>
+    <div class="status">
+      Parking Lot Status: <span id="availableSlots">5 slots available</span>
+    </div>
+  </div>
+
+  <script>
+    // JavaScript code goes here
+
+    // Get all parking slots
+    const parkingSlots = document.querySelectorAll('.parking-slot');
+
+    // Add click event listener to each parking slot
+    parkingSlots.forEach(slot => {
+      slot.addEventListener('click', () => {
+        // Remove the 'selected' class from all slots
+        parkingSlots.forEach(slot => {
+          slot.classList.remove('selected');
+        });
+
+        // Add the 'selected' class to the clicked slot
+        slot.classList.add('selected');
+      });
+    });
+
+    // Update the available slot count
+    function updateAvailableSlots() {
+      const availableSlots = document.querySelectorAll('.parking-slot:not(.booked)').length;
+      document.getElementById('availableSlots').textContent = `${availableSlots} slots available`;
+    }
+
+    // Call the function to initially set the available slot count
+    updateAvailableSlots();
+
+    // Example AJAX request to book a slot (you can customize this part)
+    function bookSlot(slotNumber) {
+      // Perform an AJAX request to book the slot with the given slotNumber
+      // Replace this with your actual AJAX code or API call
+
+      // Simulating a delay of 1 second
+      setTimeout(() => {
+        const slot = document.querySelector(`.parking-slot:nth-child(${slotNumber})`);
+        slot.classList.add('booked');
+        updateAvailableSlots();
+        alert(`Slot ${slotNumber} booked successfully.`);
+      }, 1000);
+    }
+
+    // Example AJAX request to release a slot (you can customize this part)
+    function releaseSlot(slotNumber) {
+      // Perform an AJAX request to release the slot with the given slotNumber
+      // Replace this with your actual AJAX code or API call
+
+      // Simulating a delay of 1 second
+      setTimeout(() => {
+        const slot = document.querySelector(`.parking-slot:nth-child(${slotNumber})`);
+        slot.classList.remove('booked');
+        updateAvailableSlots();
+        alert(`Slot ${slotNumber} released successfully.`);
+      }, 1000);
+    }
+
+    // Example usage of booking and releasing slots
+    const bookButton = document.getElementById('bookButton');
+    const releaseButton = document.getElementById('releaseButton');
+
+    bookButton.addEventListener('click', () => {
+      const selectedSlot = document.querySelector('.parking-slot.selected');
+      if (selectedSlot && !selectedSlot.classList.contains('booked')) {
+        const slotNumber = Array.from(selectedSlot.parentNode.children).indexOf(selectedSlot) +
